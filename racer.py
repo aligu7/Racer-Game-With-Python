@@ -7,10 +7,14 @@ import winsound
 import math
 import platform
 from pygame import mixer
+from assests.path import current_path
+
+# Take the path from path.py and assign it to the new path variable
+path = current_path + "assests/"
 
 # Play background music
 mixer.init()
-mixer.music.load("background.mp3")
+mixer.music.load(f"{path}background.mp3")
 mixer.music.play()
 
 # Game Window
@@ -54,10 +58,10 @@ def playsound(soundfile, time = 0):
 
 
 # Register Shapes
-wn.register_shape("road.gif")
-wn.register_shape("car.gif")
-wn.register_shape("roadrect.gif")
-wn.register_shape("heart.gif")
+wn.register_shape(f"{path}road.gif")
+wn.register_shape(f"{path}car.gif")
+wn.register_shape(f"{path}roadrect.gif")
+wn.register_shape(f"{path}heart.gif")
 
 # Global Variables
 speed_count = 0.005
@@ -67,9 +71,9 @@ car_width = 60
 car_height = 80
 
 # Global Arrays
-coin_frames = ["coin1.gif","coin2.gif", "coin3.gif", "coin4.gif", "coin5.gif", "coin6.gif","coin7.gif", "coin6.gif", "coin5.gif", "coin4.gif","coin3.gif","coin2.gif",]
+coin_frames = [f"{path}coin1.gif",f"{path}coin2.gif", f"{path}coin3.gif", f"{path}coin4.gif", f"{path}coin5.gif", f"{path}coin6.gif",f"{path}coin7.gif", f"{path}coin6.gif", f"{path}coin5.gif", f"{path}coin4.gif",f"{path}coin3.gif",f"{path}coin2.gif",]
 colors = ["red", "black", "yellow", "green", "blue", "lightblue", "purple", "pink", "magenta", "cyan"]
-enemycars = ["enemycar1.gif", "enemycar2.gif", "enemycar3.gif"]
+enemycars = [f"{path}enemycar1.gif", f"{path}enemycar2.gif", f"{path}enemycar3.gif"]
 
 # Register Shapes From Global Arrays
 for coin_frame in coin_frames:
@@ -201,7 +205,7 @@ class Coin(Turtle):
         self.speed(0)
         self.speed = common_speed
         self.penup()
-        self.shape("coin1.gif")
+        self.shape(f"{path}coin1.gif")
         self.animate()
         self.goto(x, y)
         self.width = 0
@@ -229,7 +233,7 @@ class Coin(Turtle):
         # Collision between player and coin
         if player.isCollision2(coin):
             self.setx(1000)
-            playsound("coin.wav")
+            playsound(f"{path}coin.wav")
             coin_score.coins_collected += 1
 
 class Heart(Turtle):
@@ -238,7 +242,7 @@ class Heart(Turtle):
         self.speed(0)
         self.speed = common_speed
         self.penup()
-        self.shape("heart.gif")
+        self.shape(f"{path}heart.gif")
         self.goto(x, y)
         self.width = 0
         self.height = 0
@@ -256,7 +260,7 @@ class Heart(Turtle):
         # # Collision between player and heart
         if player.isCollision2(heart):
             self.setx(1000)
-            playsound("powerup.wav")
+            playsound(f"{path}powerup.wav")
             lives.lives += 1
 
 class Game():
@@ -304,7 +308,7 @@ class Game():
         wn.onkeypress(player.turn_left, "Left")
 
         # Sound
-        mixer.music.load("background.wav")
+        mixer.music.load(f"{path}background.wav")
         mixer.music.play()
 
         # Stop everything on the screen
@@ -338,12 +342,12 @@ class Game():
 
         # Sound
         mixer.music.pause()
-        playsound("lose.wav")
+        playsound(f"{path}lose.wav")
 
         # Draw Status
         game_over_text = EndScreenText(0, 25, "GAME OVER", 30, "bold")
         score_text = EndScreenText(0, -9, f"Score: {math.floor(player_score.score)}", 20, "normal")
-        coins_collected_image = Sprite("coin2.gif", -20, -45, 0, 0)
+        coins_collected_image = Sprite(f"{path}coin2.gif", -20, -45, 0, 0)
         coins_collected_text = EndScreenText(20, -50, f": {coin_score.coins_collected}", 20, "normal")
         play_again_text = EndScreenText(0, -90, 'PRESS "SPACE" TO START AGAIN', 17, "normal")
 
@@ -364,16 +368,16 @@ class Game():
 game = Game()
 
 # Create Sprites
-road = Sprite("road.gif", 15, -30, 0, 0)
+road = Sprite(f"{path}road.gif", 15, -30, 0, 0)
 
 # Road Rectangles
 rects = []
 for i in range(0, 12):
-     rects.append(Sprite("roadrect.gif", -9, i * WIN_HEIGHT / 8, 0, 0))
+     rects.append(Sprite(f"{path}roadrect.gif", -9, i * WIN_HEIGHT / 8, 0, 0))
      rects[i].color("white")
      rects[i].shapesize(1.7, 1)
 
-player = Player("car.gif", 0, -230)
+player = Player(f"{path}car.gif", 0, -230)
 player.shapesize(2, 2)
 
 # Enemies
@@ -403,11 +407,11 @@ heart = Heart(random.choice([-150, 0, 150]), random.choice([1000, 1200, 1400]))
 player_score = PlayerScore(-200, 270)
 
 # Coins Collected Text
-Sprite("coin2.gif", 130, 275, 0, 0)
+Sprite(f"{path}coin2.gif", 130, 275, 0, 0)
 coin_score = CoinScore(160, 270)
 
 # Lives
-Sprite("heart.gif", 0, 287, 0, 0)
+Sprite(f"{path}heart.gif", 0, 287, 0, 0)
 lives = Lives(40, 270)
 
 # Keyboard Binding
@@ -458,7 +462,7 @@ while True:
         if player.isCollision2(enemy):
             lives.lives -= 1
             enemy.setx(10000)
-            playsound("hurt.wav")
+            playsound(f"{path}hurt.wav")
 
     # Check if lives <= 0 lose the game
     if lives.lives < 0:
