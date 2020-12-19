@@ -1,5 +1,7 @@
 import os
 
+print(os.getcwd())
+
 path = os.getcwd().split("\\")
 current_path = ""
 
